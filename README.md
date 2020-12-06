@@ -1,6 +1,6 @@
 # Express Handlebars Starter Template
 
-A starter template that uses express and handlebars.
+A starter template that uses Express and Handlebars.
 
 ## &#x1f527; Technology/Tools
 - Express
