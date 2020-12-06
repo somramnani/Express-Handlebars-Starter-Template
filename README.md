@@ -10,7 +10,7 @@ A starter template that uses express and handlebars.
 - Sequelize
 - mySQL
 
-## Notes
+## 	&#x1f5d2; Notes
 - In schema.sql change the database name to your database name.
 - Create an .env file and add:
   - DB_USERNAME=your_username
