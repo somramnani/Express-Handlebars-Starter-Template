@@ -1,1 +1,1 @@
-# Project-2
+# Express Handlebars Starter Template
