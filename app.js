@@ -1,41 +1,65 @@
-var createError = require('http-errors');
+require("dotenv").config();
 var express = require('express');
-var path = require('path');
+const handlebars = require("express-handlebars");
+const cors = require("cors");
+const PORT = process.env.PORT || 8080;
+const db = require("./models");
+const passport = require("passport");
+const path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// var logger = require('morgan');
+const htmlRoutes = require('./routes/html-routes');
+const apiRoutes = require('./routes/api-routes');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
+const app = express();
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(express.static("/public"));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// View engine setup
+app.set("view engine", "hbs");
+app.engine(
+  "hbs",
+  handlebars({
+    layoutsDir: `${__dirname}/views/layouts`,
+    extname: "hbs",
+    defaultLayout: "index",
+    helpers: require("./views/helpers/helpers"),
+    partialsDir: `${__dirname}/views/partials`,
+  })
+);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+//Routes
+app.use('/', htmlRoutes);
+app.use("/api", apiRoutes);
+
+
+// Catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  const err = new Error("Not Found");
+  err.status = 404;
+  next(err);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+//Handles errors in development
+if (app.get("env") === "development") {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render("error", {
+      message: err.message,
+      error: err,
+    });
+  });
+}
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+db.sequelize.sync({force:true}).then(function () {
+  app.listen(PORT, function () {
+    console.log(
+      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
+      PORT,
+      PORT
+    );
+  });
 });
-
-module.exports = app;
