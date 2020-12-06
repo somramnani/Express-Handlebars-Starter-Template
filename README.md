@@ -2,7 +2,7 @@
 
 A starter template that uses express and handlebars.
 
-## Technology/Frameworks
+## &#x1f527; Technology/Frameworks
 - Express
 - Handlebars
 - Node.js
