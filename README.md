@@ -8,7 +8,7 @@ A starter template that uses Express and Handlebars.
 - Node.js
 - Passport
 - Sequelize
-- mySQL
+- MySQL
 
 ## 	&#x1f5d2; Notes
 - In schema.sql change the database name to your database name.
